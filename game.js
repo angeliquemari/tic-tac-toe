@@ -31,28 +31,64 @@ class Game {
         return this.placePiece();
       }
       this.board[i][j] = this.currentPlayer;
-      this.checkForWin();
+      this.checkForWin(i, j);
     });
   }
 
-  checkForWin() {
-    // this.gameStatus = this.getGameStatus(), if win / tie, update gameOver
-    // this.gameOver = true; // placeholder
-    // this.gameStatus = `Game over! ${this.currentPlayer} won.`; // placeholder
+  checkForWin(i, j) {
+    this.gameStatus = this.getGameStatus(i, j);
+    if (this.gameStatus !== 'in progress') this.gameOver = true;
     if (!this.gameOver) {
       this.currentPlayer = (this.currentPlayer === 'X') ? 'O' : 'X';
       this.placePiece();
     } else {
-      console.log(this.gameStatus);
+      if (this.gameStatus === 'tie') {
+        console.log('Game over. It was a tie!');
+      } else {
+        console.log(`Game over. ${this.currentPlayer} won!`);
+      }
       rl.close();
     }
   }
 
-  getGameStatus() {
-    // loop through winning combos
-    // if any is all current player, return 'win'
-    // if all squares filled, return 'tie'
-    // else return 'in progress'
+  getGameStatus(i, j) {
+    // loop through row
+    let counter = 0;
+    for (let y = 0; y < 3; y++) {
+      if (this.board[i][y] === this.currentPlayer) counter++;
+    }
+    if (counter === 3) return 'win';
+    // loop through column
+    counter = 0;
+    for (let x = 0; x < 3; x++) {
+      if (this.board[x][j] === this.currentPlayer) counter++;
+    }
+    if (counter === 3) return 'win';
+    // loop through major diagonal
+    counter = 0;
+    let diagonal = [[0, 0], [1, 1], [2, 2]];
+    for (let z = 0; z < 3; z++) {
+      let x = diagonal[z][0];
+      let y = diagonal[z][1];
+      if (this.board[x][y] === this.currentPlayer) counter++;
+    }
+    if (counter === 3) return 'win';
+    // loop through major diagonal
+    counter = 0;
+    diagonal = [[2, 0], [1, 1], [0, 2]];
+    for (let z = 0; z < 3; z++) {
+      let x = diagonal[z][0];
+      let y = diagonal[z][1];
+      if (this.board[x][y] === this.currentPlayer) counter++;
+    }
+    if (counter === 3) return 'win';
+    // check for tie
+    for (let y = 0; y < 3; y++) {
+      for (let x = 0; x < 3; x++) {
+        if (!this.board[y][x]) return 'in progress';
+      }
+    }
+    return 'tie';
   }
 }
 
