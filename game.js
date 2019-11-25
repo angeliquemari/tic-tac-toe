@@ -83,9 +83,9 @@ class Game {
     }
     if (counter === 3) return 'win';
     // check for tie
-    for (let y = 0; y < 3; y++) {
-      for (let x = 0; x < 3; x++) {
-        if (!this.board[y][x]) return 'in progress';
+    for (let x = 0; x < 3; x++) {
+      for (let y = 0; y < 3; y++) {
+        if (!this.board[x][y]) return 'in progress';
       }
     }
     return 'tie';
