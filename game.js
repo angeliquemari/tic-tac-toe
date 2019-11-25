@@ -26,15 +26,19 @@ class Game {
       let ij = position.split(', ');
       let i = ij[0];
       let j = ij[1];
-      this.board[i][j] = this.currentPlayer; // todo: add error handling if position already filled
+      if (this.board[i][j]) {
+        console.log('There is already a piece there, please try again.');
+        return this.placePiece();
+      }
+      this.board[i][j] = this.currentPlayer;
       this.checkForWin();
     });
   }
 
   checkForWin() {
     // this.gameStatus = this.getGameStatus(), if win / tie, update gameOver
-    this.gameOver = true; // placeholder
-    this.gameStatus = `Game over! ${this.currentPlayer} won.`; // placeholder
+    // this.gameOver = true; // placeholder
+    // this.gameStatus = `Game over! ${this.currentPlayer} won.`; // placeholder
     if (!this.gameOver) {
       this.currentPlayer = (this.currentPlayer === 'X') ? 'O' : 'X';
       this.placePiece();
