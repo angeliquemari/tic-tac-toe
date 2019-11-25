@@ -13,7 +13,7 @@ class Game {
     ];
     this.currentPlayer = 'X';
     this.gameOver = false;
-    this.gameStatus = undefined;
+    this.gameStatus = 'in progress';
   }
   startGame() {
     this.placePiece();
@@ -26,13 +26,13 @@ class Game {
       let ij = position.split(', ');
       let i = ij[0];
       let j = ij[1];
-      this.board[i][j] = this.currentPlayer;
+      this.board[i][j] = this.currentPlayer; // todo: add error handling if position already filled
       this.checkForWin();
     });
   }
 
   checkForWin() {
-    // check this.board for win, if won, update gameOver and gameStatus
+    // this.gameStatus = this.getGameStatus(), if win / tie, update gameOver
     this.gameOver = true; // placeholder
     this.gameStatus = `Game over! ${this.currentPlayer} won.`; // placeholder
     if (!this.gameOver) {
@@ -42,6 +42,13 @@ class Game {
       console.log(this.gameStatus);
       rl.close();
     }
+  }
+
+  getGameStatus() {
+    // loop through winning combos
+    // if any is all current player, return 'win'
+    // if all squares filled, return 'tie'
+    // else return 'in progress'
   }
 }
 
