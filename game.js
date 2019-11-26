@@ -12,6 +12,7 @@ class Game {
       [null, null, null]
     ];
     this.currentPlayer = 'X';
+    this.piecesPlacedCount = 0;
     this.gameOver = false;
     this.gameStatus = 'in progress';
   }
@@ -31,6 +32,7 @@ class Game {
         return this.placePiece();
       }
       this.board[i][j] = this.currentPlayer;
+      this.piecesPlacedCount++;
       this.checkForWin(i, j);
     });
   }
@@ -52,6 +54,7 @@ class Game {
   }
 
   getGameStatus(i, j) {
+    if (this.piecesPlacedCount === 9) return 'tie';
     // loop through row
     let counter = 0;
     for (let y = 0; y < 3; y++) {
@@ -73,7 +76,7 @@ class Game {
       if (this.board[x][y] === this.currentPlayer) counter++;
     }
     if (counter === 3) return 'win';
-    // loop through major diagonal
+    // loop through minor diagonal
     counter = 0;
     diagonal = [[2, 0], [1, 1], [0, 2]];
     for (let z = 0; z < 3; z++) {
@@ -81,14 +84,7 @@ class Game {
       let y = diagonal[z][1];
       if (this.board[x][y] === this.currentPlayer) counter++;
     }
-    if (counter === 3) return 'win';
-    // check for tie
-    for (let x = 0; x < 3; x++) {
-      for (let y = 0; y < 3; y++) {
-        if (!this.board[x][y]) return 'in progress';
-      }
-    }
-    return 'tie';
+    return 'in progress';
   }
 }
 
